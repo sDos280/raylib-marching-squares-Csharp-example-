@@ -28,7 +28,7 @@ namespace marching_squres
             {
                 for (int c = 0; c < columns; c++)
                 {
-                    grid[r, c] = Raylib.GetRandomValue(0, 1);
+                    grid[c, r] = Raylib.GetRandomValue(0, 1);
                 }
             }
 
@@ -41,7 +41,7 @@ namespace marching_squres
                 {
                     for (int c = 0; c < columns; c++)
                     {
-                        Raylib.DrawCircle(tile_x * r, tile_y * c, 5, grid[r, c] == 1 ? Color.WHITE : Color.BLACK);
+                        Raylib.DrawCircle(tile_x * c, tile_y * r, 5, grid[c, r] == 1 ? Color.WHITE : Color.BLACK);
                     }
                 }
 
@@ -49,12 +49,12 @@ namespace marching_squres
                 {
                     for (int c = 0; c < columns - 1; c++)
                     {
-                        int Case = getTileCase(grid[r, c], grid[r + 1, c], grid[r, c + 1], grid[r + 1, c + 1]);
+                        int Case = getTileCase(grid[c, r], grid[c + 1, r], grid[c, r + 1], grid[c + 1, r + 1]);
 
-                        Vector2 topleftPoint = new Vector2(r * tile_x, c * tile_y);
-                        Vector2 toprightPoint = new Vector2((r + 1) * tile_x, c * tile_y);
-                        Vector2 buttomleftPoint = new Vector2(r * tile_x, (c + 1) * tile_y);
-                        Vector2 buttomrightPoint = new Vector2((r + 1) * tile_x, (c + 1) * tile_y);
+                        Vector2 topleftPoint = new Vector2(c * tile_x, r * tile_y);
+                        Vector2 toprightPoint = new Vector2((c + 1) * tile_x, r * tile_y);
+                        Vector2 buttomleftPoint = new Vector2(c * tile_x, (r + 1) * tile_y);
+                        Vector2 buttomrightPoint = new Vector2((c + 1) * tile_x, (r + 1) * tile_y);
 
                         Vector2 middleUpPoint = (topleftPoint + toprightPoint) / 2;
                         Vector2 middleDownPoint = (buttomleftPoint + buttomrightPoint) / 2;
@@ -83,33 +83,45 @@ namespace marching_squres
                                 break;
 
                             case 5:
+                                Raylib.DrawLineV(middleUpPoint, middleLeftPoint, Color.WHITE);
+                                Raylib.DrawLineV(middleDownPoint, middleRightPoint, Color.WHITE);
                                 break;
 
                             case 6:
+                                Raylib.DrawLineV(middleUpPoint, middleDownPoint, Color.WHITE);
                                 break;
 
                             case 7:
+                                Raylib.DrawLineV(middleUpPoint, middleLeftPoint, Color.WHITE);
                                 break;
 
                             case 8:
+                                Raylib.DrawLineV(middleUpPoint, middleLeftPoint, Color.WHITE);
                                 break;
 
                             case 9:
+                                Raylib.DrawLineV(middleUpPoint, middleDownPoint, Color.WHITE);
                                 break;
 
                             case 10:
+                                Raylib.DrawLineV(middleUpPoint, middleRightPoint, Color.WHITE);
+                                Raylib.DrawLineV(middleDownPoint, middleLeftPoint, Color.WHITE);
                                 break;
 
                             case 11:
+                                Raylib.DrawLineV(middleUpPoint, middleRightPoint, Color.WHITE);
                                 break;
 
                             case 12:
+                                Raylib.DrawLineV(middleLeftPoint, middleRightPoint, Color.WHITE);
                                 break;
 
                             case 13:
+                                Raylib.DrawLineV(middleDownPoint, middleRightPoint, Color.WHITE);
                                 break;
 
                             case 14:
+                                Raylib.DrawLineV(middleDownPoint, middleLeftPoint, Color.WHITE);
                                 break;
 
                             case 15:
