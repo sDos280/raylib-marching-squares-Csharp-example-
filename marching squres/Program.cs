@@ -36,7 +36,7 @@ namespace marching_squares
                 {
                     for (int c = 0; c < columns; c++)
                     {
-                        grid[c, r] = (float)Perlin.perlin(r * 0.07, c * 0.07, offset, 999999999);
+                        grid[c, r] = (float)Perlin.perlin(c * 0.07, r * 0.07, offset, 999999999);
                     }
                 }
 
