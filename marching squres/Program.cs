@@ -3,7 +3,7 @@ using engine;
 using System.Numerics;
 using System.Linq.Expressions;
 
-namespace marching_squres
+namespace marching_squares
 {
     internal class Program
     {
