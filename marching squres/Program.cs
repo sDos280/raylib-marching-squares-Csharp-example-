@@ -11,14 +11,16 @@ namespace marching_squares
         const int screenHeight = 800;
 
         const int rows = 40;
-        const int columns = 40;
+        const int columns = 45;
 
-        const float tile_x = screenWidth / (columns - 1);
-        const float tile_y = screenHeight / (rows - 1);
+        const float tile_x = (float)screenWidth / (columns - 1);
+        const float tile_y = (float)screenHeight / (rows - 1);
 
-        static int[,] grid = new int[columns, rows];
+        static float[,] grid = new float[columns, rows];
 
-        static bool WithInterpolation = true;
+        static bool WithInterpolation = false;
+
+        static float offset  = 0;
 
         public static void Main()
         {
@@ -26,18 +28,18 @@ namespace marching_squares
 
             Raylib.SetTargetFPS(60);
 
-            Raylib.SetRandomSeed(10);
-
-            for (int r = 0; r < rows; r++)
-            {
-                for (int c = 0; c < columns; c++)
-                {
-                    grid[c, r] = Raylib.GetRandomValue(0, 1);
-                }
-            }
-
             while (!Raylib.WindowShouldClose())
             {
+                offset += 0.01f;
+
+                for (int r = 0; r < rows; r++)
+                {
+                    for (int c = 0; c < columns; c++)
+                    {
+                        grid[c, r] = (float)Perlin.perlin(r * 0.07, c * 0.07, offset, 999999999);
+                    }
+                }
+
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.BLACK);
 
@@ -45,7 +47,7 @@ namespace marching_squares
                 {
                     for (int c = 0; c < columns; c++)
                     {
-                        Raylib.DrawCircle((int)(c * tile_x), (int)(r * tile_y), 5, grid[c, r] == 1 ? Color.WHITE : Color.BLACK);
+                        Raylib.DrawCircle((int)(c * tile_x), (int)(r * tile_y), 5, new Color((int)(grid[c, r] * 255), (int)(grid[c, r] * 255), (int)(grid[c, r] * 255), 255));
                     }
                 }
 
@@ -53,17 +55,17 @@ namespace marching_squares
                 {
                     for (int c = 0; c < columns - 1; c++)
                     {
-                        int Case = getTileCase(grid[c, r], grid[c + 1, r], grid[c, r + 1], grid[c + 1, r + 1]);
+                        int Case = getTileCase(grid[c, r] >= 0.5f ? 1 : 0, grid[c + 1, r] >= 0.5f ? 1 : 0, grid[c, r + 1] >= 0.5f ? 1 : 0, grid[c + 1, r + 1] >= 0.5f ? 1 : 0);
 
                         Vector2 topleftPoint = new Vector2(c * tile_x, r * tile_y);
                         Vector2 toprightPoint = new Vector2((c + 1) * tile_x, r * tile_y);
                         Vector2 buttomleftPoint = new Vector2(c * tile_x, (r + 1) * tile_y);
                         Vector2 buttomrightPoint = new Vector2((c + 1) * tile_x, (r + 1) * tile_y);
 
-                        float topleftPointValue = grid[c, r] + 1;
-                        float toprightPointValue = grid[c + 1, r] + 1;
-                        float buttomleftPointValue = grid[c, r + 1] + 1;
-                        float buttomrightPointValue = grid[c + 1, r + 1] + 1;
+                        float topleftPointValue = grid[c, r];
+                        float toprightPointValue = grid[c + 1, r];
+                        float buttomleftPointValue = grid[c, r + 1];
+                        float buttomrightPointValue = grid[c + 1, r + 1];
 
                         Vector2 middleUpPoint = new Vector2();
                         Vector2 middleDownPoint = new Vector2();
